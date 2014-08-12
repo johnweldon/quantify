@@ -1,4 +1,4 @@
-package quant
+package domain
 
 import (
 	"fmt"
@@ -14,6 +14,13 @@ type Person interface {
 	GetGender() string
 	GetHeight() Measurement
 	GetWeight() Measurement
+}
+
+type PersonRepository interface {
+	Repository
+	SavePerson(x Person) (string, error)
+	GetPerson(id string) (Person, error)
+	AllPeople() ([]Person, error)
 }
 
 var _ Person = (*person)(nil)

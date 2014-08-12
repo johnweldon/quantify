@@ -1,4 +1,4 @@
-package quant
+package domain
 
 import (
 	"fmt"
@@ -11,6 +11,13 @@ type Event interface {
 	GetTime() time.Time
 	GetLocation() Location
 	GetDescription() string
+}
+
+type EventRepository interface {
+	Repository
+	SaveEvent(event Event) (string, error)
+	GetEvent(id string) (Event, error)
+	AllEvents() ([]Event, error)
 }
 
 var _ Event = (*event)(nil)

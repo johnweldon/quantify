@@ -1,4 +1,4 @@
-package quant
+package domain
 
 import (
 	"fmt"
@@ -7,6 +7,13 @@ import (
 type Subject interface {
 	fmt.Stringer
 	GetName() string
+}
+
+type SubjectRepository interface {
+	Repository
+	SaveSubject(x Subject) (string, error)
+	GetSubject(name string) (Subject, error)
+	AllSubjects() ([]Subject, error)
 }
 
 var _ Subject = (*subject)(nil)

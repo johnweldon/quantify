@@ -1,4 +1,4 @@
-package quant
+package domain
 
 import (
 	"fmt"
@@ -10,6 +10,13 @@ type Location interface {
 	GetAltitude() Metric
 	GetLatLong() (Degree, Degree)
 	GetPosition() string
+}
+
+type LocationRepository interface {
+	Repository
+	SaveLocation(location Location) (string, error)
+	GetLocation(id string) (Location, error)
+	AllLocations() ([]Location, error)
 }
 
 var _ Location = (*location)(nil)

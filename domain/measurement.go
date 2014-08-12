@@ -1,4 +1,4 @@
-package quant
+package domain
 
 import (
 	"fmt"
@@ -9,6 +9,13 @@ type Measurement interface {
 	fmt.Stringer
 	GetSubject() Subject
 	GetMeasurements() []Measure
+}
+
+type MeasurementRepository interface {
+	Repository
+	SaveMeasurement(x Measurement) (string, error)
+	GetMeasurement(id string) (Measurement, error)
+	AllMeasurements() ([]Measurement, error)
 }
 
 var _ Measurement = (*measurement)(nil)

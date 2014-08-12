@@ -1,12 +1,13 @@
-package quant
+package domain
 
 type Entity interface {
 	GetID() string
 }
 
 type Repository interface {
-	Save(Entity) error
+	Save(Entity) (string, error)
 	Get(id string) (Entity, error)
+	All() ([]Entity, error)
 }
 
 var _ Entity = (*entity)(nil)

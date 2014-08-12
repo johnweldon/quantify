@@ -1,4 +1,4 @@
-package quant
+package domain
 
 import (
 	"fmt"
@@ -9,6 +9,13 @@ type Metric interface {
 	GetType() string
 	GetSI() string
 	GetAmount() int64
+}
+
+type MetricRepository interface {
+	Repository
+	SaveMetric(x Metric) (string, error)
+	GetMetric(id string) (Metric, error)
+	AllMetrics() ([]Metric, error)
 }
 
 var _ Metric = (*metric)(nil)
