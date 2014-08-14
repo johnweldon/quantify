@@ -5,14 +5,6 @@ import (
 	"time"
 )
 
-type Event interface {
-	fmt.Stringer
-	GetName() string
-	GetTime() time.Time
-	GetLocation() Location
-	GetDescription() string
-}
-
 type EventRepository interface {
 	Repository
 	SaveEvent(event Event) (string, error)
@@ -20,9 +12,7 @@ type EventRepository interface {
 	AllEvents() ([]Event, error)
 }
 
-var _ Event = (*event)(nil)
-
-type event struct {
+type Event struct {
 	Time        time.Time `json:"time",bson:"time",xml:"event-time"`
 	Location    Location  `json:"location",bson:"location",xml:"event-location"`
 	Name        string    `json:"name",bson:"name",xml:"event-name"`
@@ -30,11 +20,11 @@ type event struct {
 }
 
 func NewEvent(name, description string, time time.Time, location Location) Event {
-	return event{Time: time, Location: location, Name: name, Description: description}
+	return Event{Time: time, Location: location, Name: name, Description: description}
 }
 
-func (e event) GetName() string        { return e.Name }
-func (e event) GetTime() time.Time     { return e.Time }
-func (e event) GetLocation() Location  { return e.Location }
-func (e event) GetDescription() string { return e.Description }
-func (e event) String() string         { return fmt.Sprintf("%s, %s, %s", e.Name, e.Time, e.Location) }
+func (e Event) GetName() string        { return e.Name }
+func (e Event) GetTime() time.Time     { return e.Time }
+func (e Event) GetLocation() Location  { return e.Location }
+func (e Event) GetDescription() string { return e.Description }
+func (e Event) String() string         { return fmt.Sprintf("%s, %s, %s", e.Name, e.Time, e.Location) }

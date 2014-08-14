@@ -1,29 +1,15 @@
 package domain
 
 import (
-	"fmt"
 	"time"
 )
 
-type Person interface {
-	fmt.Stringer
-	GetFirstName() string
-	GetLastName() string
-	GetBirthdate() time.Time
-	GetDeathdate() time.Time
-	GetGender() string
-	GetHeight() Measurement
-	GetWeight() Measurement
-}
-
 type PersonRepository interface {
 	Repository
-	SavePerson(x Person) (string, error)
+	SavePerson(p Person) (string, error)
 	GetPerson(id string) (Person, error)
 	AllPeople() ([]Person, error)
 }
-
-var _ Person = (*person)(nil)
 
 type gender byte
 
@@ -38,13 +24,27 @@ func (g gender) String() string {
 	}
 }
 
+func parseGender(gender string) gender {
+	if len(gender) == 0 {
+		return unknown
+	}
+	switch gender[0] {
+	case 'M', 'm', 'B', 'b':
+		return male
+	case 'F', 'f', 'G', 'g', 'W', 'w':
+		return male
+	default:
+		return unknown
+	}
+}
+
 const (
 	unknown gender = 'U'
 	female  gender = 'F'
 	male    gender = 'M'
 )
 
-type person struct {
+type Person struct {
 	Subject
 	FirstName string      `json:"firstname",bson:"firstname",xml:"person-firstname"`
 	LastName  string      `json:"lastname",bson:"lastname",xml:"person-lastname"`
@@ -55,10 +55,19 @@ type person struct {
 	Height    Measurement `json:"height",bson:"height",xml:"person-height"`
 }
 
-func (p person) GetFirstName() string    { return p.FirstName }
-func (p person) GetLastName() string     { return p.LastName }
-func (p person) GetBirthdate() time.Time { return p.Birthdate }
-func (p person) GetDeathdate() time.Time { return p.Deathdate }
-func (p person) GetGender() string       { return p.Gender.String() }
-func (p person) GetHeight() Measurement  { return p.Height }
-func (p person) GetWeight() Measurement  { return p.Weight }
+func NewPerson(first, last, gender string, birthday time.Time) Person {
+	return Person{
+		FirstName: first,
+		LastName:  last,
+		Birthdate: birthday,
+		Gender:    parseGender(gender),
+	}
+}
+
+func (p Person) GetFirstName() string    { return p.FirstName }
+func (p Person) GetLastName() string     { return p.LastName }
+func (p Person) GetBirthdate() time.Time { return p.Birthdate }
+func (p Person) GetDeathdate() time.Time { return p.Deathdate }
+func (p Person) GetGender() string       { return p.Gender.String() }
+func (p Person) GetHeight() Measurement  { return p.Height }
+func (p Person) GetWeight() Measurement  { return p.Weight }
