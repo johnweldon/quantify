@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/johnweldon/quant/domain"
-	"github.com/johnweldon/quant/infrastructure"
+	"github.com/johnweldon/quantify/domain"
+	"github.com/johnweldon/quantify/infrastructure"
 )
 
 func TestPersistence(t *testing.T) {

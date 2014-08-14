@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/johnweldon/quant/domain"
+	"github.com/johnweldon/quantify/domain"
 
 	"code.google.com/p/go-uuid/uuid"
 )
